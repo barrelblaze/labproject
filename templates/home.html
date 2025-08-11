@@ -10,6 +10,9 @@
         }
         .report-section {
             display: none;
+            max-height: calc(100vh - 160px); /* leave space for navbar + tabs */
+            overflow-y: auto;
+            padding-right: 8px; /* avoid scrollbar overlap */
         }
         .report-section.active {
             display: block;
@@ -30,7 +33,7 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            max-width: 500px; /* prevents overly wide cards */
+            max-width: 500px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -84,68 +87,59 @@
 
     <!-- All Reports Section -->
     <div id="allReports" class="report-section active">
-        <div class="row">
         {% if all_reports %}
             {% for report in all_reports %}
-                <div class="col-md-6 col-lg-4">
-                    <div class="card report-card">
-                        {% if report.image %}
-                            <img src="{{ url_for('static', filename='uploads/' ~ report.image) }}" class="img-preview" alt="Report Image">
-                        {% else %}
-                            <img src="https://via.placeholder.com/400x250/000000/FFFFFF?text=No+Image" class="img-preview" alt="No Image">
-                        {% endif %}
-                        <div class="card-body">
-                            <h5 class="card-title text-primary">{{ report.category }}</h5>
-                            <p class="card-text">{{ report.description }}</p>
-                            <p class="card-text"><strong>Location:</strong> {{ report.location }}</p>
-                            <p class="card-text"><strong>Contact:</strong> {{ report.contact }}</p>
-                            <p class="card-text"><strong>Date:</strong> {{ report.date }}</p>
-                        </div>
+                <div class="card report-card">
+                    {% if report.image %}
+                        <img src="{{ url_for('static', filename='uploads/' ~ report.image) }}" class="img-preview" alt="Report Image">
+                    {% else %}
+                        <img src="https://via.placeholder.com/400x250/000000/FFFFFF?text=No+Image" class="img-preview" alt="No Image">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ report.category }}</h5>
+                        <p class="card-text">{{ report.description }}</p>
+                        <p class="card-text"><strong>Location:</strong> {{ report.location }}</p>
+                        <p class="card-text"><strong>Contact:</strong> {{ report.contact }}</p>
+                        <p class="card-text"><strong>Date:</strong> {{ report.date }}</p>
                     </div>
                 </div>
             {% endfor %}
         {% else %}
             <p class="text-center text-muted">No reports from other users yet.</p>
         {% endif %}
-        </div>
     </div>
 
     <!-- My Reports Section -->
     <div id="myReports" class="report-section">
-        <div class="row">
         {% if my_reports %}
             {% for report in my_reports %}
-                <div class="col-md-6 col-lg-4">
-                    <div class="card report-card">
-                        {% if report.image %}
-                            <img src="{{ url_for('static', filename='uploads/' ~ report.image) }}" class="img-preview" alt="Report Image">
-                        {% else %}
-                            <img src="https://via.placeholder.com/400x250/000000/FFFFFF?text=No+Image" class="img-preview" alt="No Image">
-                        {% endif %}
-                        <div class="card-body">
-                            <h5 class="card-title text-success">{{ report.category }}</h5>
-                            <p class="card-text">{{ report.description }}</p>
-                            <p class="card-text"><strong>Location:</strong> {{ report.location }}</p>
-                            <p class="card-text"><strong>Contact:</strong> {{ report.contact }}</p>
-                            <p class="card-text"><strong>Date:</strong> {{ report.date }}</p>
-                            <form action="{{ url_for('delete', id=report.id) }}" method="POST" class="mt-2 delete-form">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </div>
+                <div class="card report-card">
+                    {% if report.image %}
+                        <img src="{{ url_for('static', filename='uploads/' ~ report.image) }}" class="img-preview" alt="Report Image">
+                    {% else %}
+                        <img src="https://via.placeholder.com/400x250/000000/FFFFFF?text=No+Image" class="img-preview" alt="No Image">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title text-success">{{ report.category }}</h5>
+                        <p class="card-text">{{ report.description }}</p>
+                        <p class="card-text"><strong>Location:</strong> {{ report.location }}</p>
+                        <p class="card-text"><strong>Contact:</strong> {{ report.contact }}</p>
+                        <p class="card-text"><strong>Date:</strong> {{ report.date }}</p>
+                        <form action="{{ url_for('delete', id=report.id) }}" method="POST" class="mt-2 delete-form">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
                     </div>
                 </div>
             {% endfor %}
         {% else %}
             <p class="text-center text-muted">You have not submitted any reports yet.</p>
         {% endif %}
-        </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Toggle sections
     const myBtn = document.getElementById("myReportsBtn");
     const allBtn = document.getElementById("allReportsBtn");
     const mySection = document.getElementById("myReports");
@@ -167,13 +161,11 @@
         allSection.classList.remove("active");
     });
 
-    // Auto-hide flash after 3s
     setTimeout(() => {
         const flash = document.getElementById("flash-messages");
         if (flash) flash.style.display = "none";
     }, 3000);
 
-    // SweetAlert delete confirmation
     document.querySelectorAll('.delete-form').forEach(form => {
         form.addEventListener('submit', function (e) {
             e.preventDefault();
