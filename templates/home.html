@@ -33,7 +33,7 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            max-width: 500px;
+            max-width: 600px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -96,7 +96,7 @@
                         <img src="https://via.placeholder.com/400x250/000000/FFFFFF?text=No+Image" class="img-preview" alt="No Image">
                     {% endif %}
                     <div class="card-body">
-                        <h5 class="card-title text-primary">{{ report.category }}</h5>
+                        <h5 class="card-title text-primary">Category : {{ report.category }}</h5>
                         <p class="card-text">{{ report.description }}</p>
                         <p class="card-text"><strong>Location:</strong> {{ report.location }}</p>
                         <p class="card-text"><strong>Contact:</strong> {{ report.contact }}</p>
@@ -120,7 +120,7 @@
                         <img src="https://via.placeholder.com/400x250/000000/FFFFFF?text=No+Image" class="img-preview" alt="No Image">
                     {% endif %}
                     <div class="card-body">
-                        <h5 class="card-title text-success">{{ report.category }}</h5>
+                        <h5 class="card-title text-success">Category : {{ report.category }}</h5>
                         <p class="card-text">{{ report.description }}</p>
                         <p class="card-text"><strong>Location:</strong> {{ report.location }}</p>
                         <p class="card-text"><strong>Contact:</strong> {{ report.contact }}</p>
